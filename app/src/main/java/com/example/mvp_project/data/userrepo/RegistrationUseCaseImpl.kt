@@ -2,10 +2,10 @@ package com.example.mvp_project.data.userrepo
 
 import android.os.Handler
 import androidx.annotation.MainThread
-import com.example.mvp_project.data.database.AccountEntity
 import com.example.mvp_project.domain.LoginApi
 import com.example.mvp_project.domain.UseCase.CallbackData
 import com.example.mvp_project.domain.UseCase.RegistrationUseCase
+import com.example.mvp_project.domain.entities.UserProfile
 
 class RegistrationUseCaseImpl(
     private val api: LoginApi,
@@ -15,7 +15,7 @@ class RegistrationUseCaseImpl(
         login: String,
         password: String,
         email: String,
-        @MainThread callback: CallbackData<AccountEntity>
+        @MainThread callback: CallbackData<UserProfile>
     ) {
         Thread {
             try {
