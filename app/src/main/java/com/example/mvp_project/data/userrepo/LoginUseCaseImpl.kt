@@ -1,23 +1,24 @@
-package com.example.mvp_project.data.usecaserepo
+package com.example.mvp_project.data.userrepo
 
 import android.os.Handler
 import androidx.annotation.MainThread
 import com.example.mvp_project.domain.LoginApi
-import com.example.mvp_project.domain.UseCaseImpl.CallbackData
+import com.example.mvp_project.domain.UseCase.CallbackData
+import com.example.mvp_project.domain.UseCase.LoginUseCase
 import com.example.mvp_project.domain.entities.UserProfile
 
-class ForgetPasswordUseCase(
+class LoginUseCaseImpl(
     private val api: LoginApi,
     private val uiHandler: Handler
-) : IForgetPasswordUseCase {
-
-    override fun forgetPassword(
-        email: String,
+) : LoginUseCase {
+    override fun login(
+        login: String,
+        password: String,
         @MainThread callback: CallbackData<UserProfile>
     ) {
         Thread {
             try {
-                val account = api.forgotPassword(email)
+                val account = api.login(login, password)
                 uiHandler.post {
                     callback.onSuccess(account)
                 }

@@ -15,4 +15,3 @@ interface AccountsDao {
     @Query("SELECT * FROM AccountEntity")
     fun getAllAccountData(): List<AccountEntity>
 }
-}

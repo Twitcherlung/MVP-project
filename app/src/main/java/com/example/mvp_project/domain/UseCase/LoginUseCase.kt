@@ -1,9 +1,9 @@
-package com.example.mvp_project.domain.UseCaseImpl
+package com.example.mvp_project.domain.UseCase
 
 import androidx.annotation.MainThread
 import com.example.mvp_project.domain.entities.UserProfile
 
-interface LoginUseCaseImpl {
+interface LoginUseCase {
     fun login(
         login: String,
         password: String,

@@ -1,24 +1,25 @@
-package com.example.mvp_project.data.usecaserepo
+package com.example.mvp_project.data.userrepo
 
 import android.os.Handler
 import androidx.annotation.MainThread
+import com.example.mvp_project.data.database.AccountEntity
 import com.example.mvp_project.domain.LoginApi
-import com.example.mvp_project.domain.UseCaseImpl.CallbackData
-import com.example.mvp_project.domain.UseCaseImpl.LoginUseCaseImpl
-import com.example.mvp_project.domain.entities.UserProfile
+import com.example.mvp_project.domain.UseCase.CallbackData
+import com.example.mvp_project.domain.UseCase.RegistrationUseCase
 
-class LoginUseCase(
+class RegistrationUseCaseImpl(
     private val api: LoginApi,
     private val uiHandler: Handler
-) : LoginUseCaseImpl {
-    override fun login(
+) : RegistrationUseCase {
+    override fun register(
         login: String,
         password: String,
-        @MainThread callback: CallbackData<UserProfile>
+        email: String,
+        @MainThread callback: CallbackData<AccountEntity>
     ) {
         Thread {
             try {
-                val account = api.login(login, password)
+                val account = api.register(login, password, email)
                 uiHandler.post {
                     callback.onSuccess(account)
                 }
