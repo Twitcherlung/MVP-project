@@ -2,6 +2,8 @@ package com.example.mvp_project
 
 import android.app.Application
 import android.content.Context
+import android.os.Handler
+import android.os.Looper
 import androidx.room.Room
 import com.example.mvp_project.data.database.AccountsDao
 import com.example.mvp_project.data.database.AccountsDataBase
@@ -18,13 +20,13 @@ class App : Application() {
     private val loginApi: LoginApi by lazy { RoomLoginApiImpl(getAccountDao()) }
 
     val loginUseCase: LoginUseCase by lazy {
-        LoginUseCaseImpl(app.loginApi)
+        LoginUseCaseImpl(app.loginApi , Handler(Looper.getMainLooper()))
     }
     val registrationUseCase: RegistrationUseCase by lazy {
-        RegistrationUseCaseImpl(app.loginApi)
+        RegistrationUseCaseImpl(app.loginApi, Handler(Looper.getMainLooper()))
     }
     val forgetPasswordUseCase: ForgetPasswordUseCase by lazy {
-        ForgetPasswordUseCaseImpl(app.loginApi)
+        ForgetPasswordUseCaseImpl(app.loginApi, Handler(Looper.getMainLooper()))
     }
 
     override fun onCreate() {

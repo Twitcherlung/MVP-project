@@ -9,18 +9,21 @@ import com.example.mvp_project.domain.entities.UserProfile
 
 class ForgetPasswordUseCaseImpl(
     private val api: LoginApi,
+    private val uiHandler: Handler
 ) : ForgetPasswordUseCase {
 
     override fun forgetPassword(
         email: String,
-        callback: CallbackData<UserProfile>
+        @MainThread callback: CallbackData<UserProfile>
     ) {
         Thread {
             try {
                 val account = api.forgotPassword(email)
-                callback.onSuccess(account)
+                uiHandler.post {
+                    callback.onSuccess(account)
+                }
             } catch (exc: Exception) {
-                callback.onError(exc)
+                uiHandler.post { callback.onError(exc) }
             }
         }.start()
     }

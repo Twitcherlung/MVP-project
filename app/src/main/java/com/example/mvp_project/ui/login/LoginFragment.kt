@@ -93,7 +93,7 @@ class LoginFragment :
             }
         }
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
-        binding.root.setBackgroundColor(Color.RED)
+        binding.root.setBackgroundColor(Color.YELLOW)
     }
 
     override fun loadAccountData(account: UserProfile) {
