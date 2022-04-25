@@ -1,4 +1,4 @@
-package com.example.mvp_project.UI.registration
+package com.example.mvp_project.ui.registration
 
 import com.example.mvp_project.domain.entities.UserProfile
 

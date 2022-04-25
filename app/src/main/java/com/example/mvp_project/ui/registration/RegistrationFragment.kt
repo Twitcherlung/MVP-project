@@ -1,4 +1,4 @@
-package com.example.mvp_project.UI.login
+package com.example.mvp_project.ui.registration
 
 import android.graphics.Color
 import android.os.Bundle
@@ -6,60 +6,41 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.mvp_project.R
-import com.example.mvp_project.UI.BaseFragment
-import com.example.mvp_project.UI.NavigationActivity
-import com.example.mvp_project.UI.registration.RegistrationFragment
+import com.example.mvp_project.ui.BaseFragment
 import com.example.mvp_project.app
+import com.example.mvp_project.data.database.EmailException
 import com.example.mvp_project.data.database.LoginException
 import com.example.mvp_project.data.database.PasswordException
-import com.example.mvp_project.data.database.SignInException
-import com.example.mvp_project.databinding.FragmentLoginBinding
+import com.example.mvp_project.data.database.RegistrationException
+import com.example.mvp_project.databinding.FragmentRegistrationBinding
 import com.example.mvp_project.domain.entities.UserProfile
 
-class LoginFragment :
-    BaseFragment<FragmentLoginBinding>(FragmentLoginBinding::inflate),
-    LoginContract.LoginViewInterface {
+class RegistrationFragment :
+    BaseFragment<FragmentRegistrationBinding>(FragmentRegistrationBinding::inflate),
+    RegistrationContract.RegistrationViewInterface {
 
-    private var presenter: LoginContract.LoginPresenterInterface? = null
+    private var presenter: RegistrationContract.RegistrationPresenterInterface? = null
 
     companion object {
-        fun newInstance() = LoginFragment()
+        fun newInstance() = RegistrationFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        presenter = activity?.app?.let { LoginPresenter(it.loginUseCase) }
+        presenter = activity?.app?.let { RegistrationPresenter(it.registrationUseCase) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         presenter?.onAttachView(this)
-        connectSignals()
-    }
 
-    private fun connectSignals() {
-
-        binding.forgetPasswordButton.setOnClickListener {
-            activity?.let {
-                if (it is NavigationActivity) {
-                    it.navigationTo(ForgetPasswordFragment.newInstance(), true)
-                }
-            }
-        }
-
-        binding.registrationButton.setOnClickListener {
-            activity?.let {
-                if (it is NavigationActivity) {
-                    it.navigationTo(RegistrationFragment.newInstance(), true)
-                }
-            }
-        }
-
-        binding.signInButton.setOnClickListener {
-            presenter?.onLogin(
+        binding.buttonCreate.setOnClickListener {
+            presenter?.onRegistration(
                 binding.loginTextView.text.toString(),
-                binding.passwordTextView.text.toString()
+                binding.passwordTextView.text.toString(),
+                binding.emailTextView.text.toString(),
             )
         }
     }
@@ -78,14 +59,17 @@ class LoginFragment :
 
     override fun showError(error: Exception) {
         val text = when (error) {
-            is SignInException -> {
-                getString(R.string.error_sig_in)
+            is RegistrationException -> {
+                getString(R.string.error_registration)
             }
             is PasswordException -> {
                 getString(R.string.error_password_empty)
             }
             is LoginException -> {
                 getString(R.string.error_login_empty)
+            }
+            is EmailException -> {
+                getString(R.string.error_email_empty)
             }
             else -> {
                 getString(R.string.unexpected_error_occurred) + error.toString()
@@ -96,7 +80,7 @@ class LoginFragment :
     }
 
     override fun loadAccountData(account: UserProfile) {
-        Toast.makeText(context, getString(R.string.success_sig_in), Toast.LENGTH_SHORT).show()
+        Toast.makeText(context, getString(R.string.success_registration), Toast.LENGTH_SHORT).show()
     }
 
     override fun onDestroy() {

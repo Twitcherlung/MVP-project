@@ -1,4 +1,4 @@
-package com.example.mvp_project.UI.login
+package com.example.mvp_project.ui.login
 
 import com.example.mvp_project.domain.UseCase.CallbackData
 import com.example.mvp_project.domain.UseCase.LoginUseCase

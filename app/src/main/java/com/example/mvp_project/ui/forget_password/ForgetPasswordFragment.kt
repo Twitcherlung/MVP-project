@@ -1,4 +1,4 @@
-package com.example.mvp_project.UI.registration
+package com.example.mvp_project.ui.forget_password
 
 import android.graphics.Color
 import android.os.Bundle
@@ -6,29 +6,28 @@ import android.view.View
 import android.widget.Toast
 import androidx.core.view.isVisible
 import com.example.mvp_project.R
-import com.example.mvp_project.UI.BaseFragment
+import com.example.mvp_project.ui.BaseFragment
 import com.example.mvp_project.app
 import com.example.mvp_project.data.database.EmailException
-import com.example.mvp_project.data.database.LoginException
-import com.example.mvp_project.data.database.PasswordException
-import com.example.mvp_project.data.database.RegistrationException
-import com.example.mvp_project.databinding.FragmentRegistrationBinding
+import com.example.mvp_project.data.database.ForgetPasswordException
+import com.example.mvp_project.databinding.FragmentForgetPasswordBinding
 import com.example.mvp_project.domain.entities.UserProfile
 
-class RegistrationFragment :
-    BaseFragment<FragmentRegistrationBinding>(FragmentRegistrationBinding::inflate),
-    RegistrationContract.RegistrationViewInterface {
+class ForgetPasswordFragment :
+    BaseFragment<FragmentForgetPasswordBinding>(FragmentForgetPasswordBinding::inflate),
+    ForgetPasswordContract.ForgetPasswordViewInterface {
 
-    private var presenter: RegistrationContract.RegistrationPresenterInterface? = null
+    private var presenter: ForgetPasswordContract.ForgetPasswordPresenterInterface? = null
+
 
     companion object {
-        fun newInstance() = RegistrationFragment()
+        fun newInstance() = ForgetPasswordFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
-        presenter = activity?.app?.let { RegistrationPresenter(it.registrationUseCase) }
+        presenter = activity?.app?.let { ForgetPasswordPresenter(it.forgetPasswordUseCase) }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -36,11 +35,9 @@ class RegistrationFragment :
 
         presenter?.onAttachView(this)
 
-        binding.buttonCreate.setOnClickListener {
-            presenter?.onRegistration(
-                binding.loginTextView.text.toString(),
-                binding.passwordTextView.text.toString(),
-                binding.emailTextView.text.toString(),
+        binding.restoreButton.setOnClickListener {
+            presenter?.findAccount(
+                binding.emailTextView.text.toString()
             )
         }
     }
@@ -59,14 +56,8 @@ class RegistrationFragment :
 
     override fun showError(error: Exception) {
         val text = when (error) {
-            is RegistrationException -> {
-                getString(R.string.error_registration)
-            }
-            is PasswordException -> {
-                getString(R.string.error_password_empty)
-            }
-            is LoginException -> {
-                getString(R.string.error_login_empty)
+            is ForgetPasswordException -> {
+                getString(R.string.error_forget_password)
             }
             is EmailException -> {
                 getString(R.string.error_email_empty)
@@ -79,7 +70,7 @@ class RegistrationFragment :
         binding.root.setBackgroundColor(Color.RED)
     }
 
-    override fun loadAccountData(account: UserProfile) {
+    override fun forgetPasswordData(account: UserProfile) {
         Toast.makeText(context, getString(R.string.success_registration), Toast.LENGTH_SHORT).show()
     }
 
@@ -87,4 +78,5 @@ class RegistrationFragment :
         super.onDestroy()
         presenter?.onDetach()
     }
+
 }

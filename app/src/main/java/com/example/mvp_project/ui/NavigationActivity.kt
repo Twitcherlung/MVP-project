@@ -1,4 +1,4 @@
-package com.example.mvp_project.UI
+package com.example.mvp_project.ui
 
 import androidx.fragment.app.Fragment
 

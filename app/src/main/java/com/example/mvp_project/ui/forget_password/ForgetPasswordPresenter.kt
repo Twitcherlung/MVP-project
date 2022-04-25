@@ -1,32 +1,32 @@
-package com.example.mvp_project.UI.registration
+package com.example.mvp_project.ui.forget_password
 
 import com.example.mvp_project.domain.UseCase.CallbackData
-import com.example.mvp_project.domain.UseCase.RegistrationUseCase
+import com.example.mvp_project.domain.UseCase.ForgetPasswordUseCase
 import com.example.mvp_project.domain.entities.UserProfile
 
-class RegistrationPresenter(
-    private val registrationUseCase: RegistrationUseCase
-) : RegistrationContract.RegistrationPresenterInterface {
+class ForgetPasswordPresenter(
+    private val forgetPasswordUseCase: ForgetPasswordUseCase
+) : ForgetPasswordContract.ForgetPasswordPresenterInterface {
 
     private var isSuccess: Boolean = false
-    private var view: RegistrationContract.RegistrationViewInterface? = null
+    private var view: ForgetPasswordContract.ForgetPasswordViewInterface? = null
 
-    override fun onAttachView(view: RegistrationContract.RegistrationViewInterface) {
+    override fun onAttachView(view: ForgetPasswordContract.ForgetPasswordViewInterface) {
         this.view = view
         if (isSuccess) {
             view.setSuccess()
         }
     }
 
-    override fun onRegistration(login: String, password: String, email: String) {
+    override fun findAccount(email: String) {
         view?.showProgress()
-        registrationUseCase.register(login, password, email, object : CallbackData<UserProfile> {
+        forgetPasswordUseCase.forgetPassword(email, object : CallbackData<UserProfile> {
             override fun onSuccess(result: UserProfile) {
                 view?.hideProgress()
-                view?.loadAccountData(result)
-                view?.setSuccess()
+                view?.forgetPasswordData(result)
                 isSuccess = true
             }
+
             override fun onError(error: Exception) {
                 view?.hideProgress()
                 view?.showError(error)

@@ -1,11 +1,13 @@
 package com.example.mvp_project.data.database
+
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+
 @Entity
 data class AccountEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int?,
+    val uid: Int?,
     @ColumnInfo(name = "LOGIN")
     val login: String,
     @ColumnInfo(name = "PASSWORD")

@@ -42,7 +42,7 @@ class RoomLoginApiImpl(private val localDataSource: AccountsDao) : LoginApi {
                 throw RegistrationException()
             }
         }
-        val newAccount = AccountEntity(id=null, login = login, password = password, email = email)
+        val newAccount = AccountEntity(uid=null, login = login, password = password, email = email)
         localDataSource.registration(newAccount)
         return convertAccountToEntities(newAccount)
     }

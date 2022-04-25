@@ -9,7 +9,6 @@ import com.example.mvp_project.domain.entities.UserProfile
 
 class RegistrationUseCaseImpl(
     private val api: LoginApi,
-    private val uiHandler: Handler
 ) : RegistrationUseCase {
     override fun register(
         login: String,
@@ -20,11 +19,9 @@ class RegistrationUseCaseImpl(
         Thread {
             try {
                 val account = api.register(login, password, email)
-                uiHandler.post {
-                    callback.onSuccess(account)
-                }
+                callback.onSuccess(account)
             } catch (exc: Exception) {
-                uiHandler.post { callback.onError(exc) }
+                callback.onError(exc)
             }
         }.start()
     }

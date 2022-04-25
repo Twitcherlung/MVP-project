@@ -5,7 +5,7 @@ import com.example.mvp_project.domain.entities.UserProfile
 
 fun convertAccountToEntities(account: AccountEntity): UserProfile {
     return UserProfile(
-        id = account.id,
+        id = account.uid,
         login = account.login,
         email = account.email
     )
